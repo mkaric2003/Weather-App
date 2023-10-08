@@ -32,9 +32,13 @@ class WeatherResult extends StatelessWidget {
           Text(
             locationName,
             style: const TextStyle(
-                color: Colors.white, fontSize: 30, fontWeight: FontWeight.w500),
+              color: Colors.white,
+              fontSize: 30,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

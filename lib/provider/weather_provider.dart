@@ -84,8 +84,14 @@ class WeatherProvider extends ChangeNotifier {
       );
       if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks[0];
-        String locationName = placemark.locality!;
-        return locationName;
+        String? locationName = placemark.locality!.isNotEmpty
+            ? placemark.locality
+            : placemark.subLocality!.isNotEmpty
+                ? placemark.subAdministrativeArea
+                : placemark.country!.isNotEmpty
+                    ? placemark.country
+                    : 'Unknown place';
+        return locationName!;
       } else {
         return 'Unknown place';
       }

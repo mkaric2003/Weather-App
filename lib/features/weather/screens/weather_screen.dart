@@ -57,7 +57,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? ErrorState(locationName: searchController.text)
                       : weatherProvider.weatherResponse == null
                           ? weatherProvider.currentLocationWeather == null
-                              ? const CircularProgressIndicator()
+                              ? const Column(
+                                  children: [
+                                    ErrorState(
+                                      locationName: 'your current location',
+                                    )
+                                  ],
+                                )
                               : WeatherResult(
                                   weatherDesription: weatherProvider
                                       .currentLocationWeatherDesc!,
@@ -87,19 +93,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   .toString(),
                             ),
                   !weatherProvider.isError
-                      ? ElevatedButton(
-                          onPressed: weatherProvider.weatherResponse == null &&
-                                  weatherProvider.currentLocationWeather == null
-                              ? null
-                              : () {
-                                  context.pushNamed(
-                                    '/weather-detail',
-                                    extra: weatherProvider.weatherResponse ??
-                                        weatherProvider.currentLocationWeather,
-                                  );
-                                },
-                          child: const Text('Check for details'),
-                        )
+                      ? weatherProvider.weatherResponse == null &&
+                              weatherProvider.currentLocationWeather == null
+                          ? Container()
+                          : ElevatedButton(
+                              onPressed: () {
+                                context.pushNamed(
+                                  '/weather-detail',
+                                  extra: weatherProvider.weatherResponse ??
+                                      weatherProvider.currentLocationWeather,
+                                );
+                              },
+                              child: const Text('Check for details'),
+                            )
                       : const SizedBox.shrink(),
                 ],
               ),
