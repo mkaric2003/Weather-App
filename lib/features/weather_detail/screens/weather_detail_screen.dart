@@ -24,6 +24,7 @@ class WeatherDetailScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          centerTitle: true,
           title: Text(
             weatherResponse.name!,
             style: const TextStyle(

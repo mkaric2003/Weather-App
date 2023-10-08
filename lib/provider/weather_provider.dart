@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_app/models/weather_response.dart';
 
+import '../firebase_options.dart';
+
 class WeatherProvider extends ChangeNotifier {
   final String _baseUrl = 'https://api.openweathermap.org/data/2.5';
   bool isError = false;
@@ -13,17 +15,16 @@ class WeatherProvider extends ChangeNotifier {
   String? weatherDesc;
   String? currentLocationWeatherDesc;
   WeatherResponse? currentLocationWeather;
-  bool isCurrentlyDay = false;
+  bool isCurrentlyDay = true;
 
   Future<void> getWeatherByCity(String city) async {
-    final response = await http.get(Uri.parse(
-        '$_baseUrl/weather?q=$city&appid=1148516082a7ded7f4891f93dfd38b57'));
+    final response = await http
+        .get(Uri.parse('$_baseUrl/weather?q=$city&appid=$openWeatherMapToken'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       weatherResponse = WeatherResponse.fromJson(jsonResponse);
       weatherDesc = weatherResponse!.weather![0].main;
-      isCurrentlyDay = isDayTime(
-          weatherResponse!.sys!.sunrise!, weatherResponse!.sys!.sunset!);
+
       isError = false;
       notifyListeners();
     } else {
@@ -42,6 +43,8 @@ class WeatherProvider extends ChangeNotifier {
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       currentLocationWeather = WeatherResponse.fromJson(jsonResponse);
       currentLocationWeatherDesc = currentLocationWeather!.weather![0].main;
+      isCurrentlyDay = isDayTime(currentLocationWeather!.sys!.sunrise!,
+          currentLocationWeather!.sys!.sunset!);
       notifyListeners();
       return WeatherResponse.fromJson(jsonResponse);
     } else {

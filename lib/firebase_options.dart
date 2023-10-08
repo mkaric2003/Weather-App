@@ -72,3 +72,5 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.weatherApp',
   );
 }
+
+const openWeatherMapToken = '1148516082a7ded7f4891f93dfd38b57';
